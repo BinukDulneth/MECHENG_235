@@ -133,35 +133,36 @@ void setup() {
 
   Motor3Movement(2, 150);
   Motor3Movement(3, 0); // Stop
-  delay(2000);
+  delay(1000); // S Arm Shoulder Back 
 
   Motor4Movement(2, 100);
   Motor4Movement(3, 0); // Stop
-  delay(2000);
+  delay(1000);
+  //S Arm Elbow Back 
+
 
   Motor2Movement(2, 90);
   Motor2Movement(3, 0); // Stop
-  delay(500);
+  delay(250); 
+  // L Arm Shoudler back
 
   // Sweep up
   for (int pos = endAngle; pos <= startAngle; pos++) {
     myServo.write(pos);
-    delay(20);
+    delay(15);
   }
-
-  delay(1000);
 
   Motor1Movement(2, 70);
   Motor1Movement(3, 0); // Stop
-  delay(1000);
+  delay(500);
 
   // Sweep down
   for (int pos = startAngle; pos >= endAngle; pos--) {
     myServo.write(pos);
-    delay(20);
+    delay(15);
   }
 
-  delay(1000);
+  delay(500);
 
   Motor2Movement(1, 500);       // change accordingly
   Motor2Movement(3, 0); // Stop
@@ -169,7 +170,7 @@ void setup() {
 
   Motor1Movement(1, 40);
   Motor1Movement(3, 0); // Stop
-  delay(1000);
+  delay(500);
 
   // Final sweep
   for (int pos = endAngle; pos <= startAngle; pos++) {
@@ -184,12 +185,12 @@ void setup() {
 
   Motor1Movement(2, 80);
   Motor1Movement(3, 0); // Stop
-  delay(1000);
+  delay(500);
 
    //closing of the small arm
    for (int pos = startAngle; pos >= endAngle; pos--) {
     myServo2.write(pos);
-    delay(20);
+    delay(15);
   }
 
   Motor3Movement(1, 500);
@@ -198,12 +199,12 @@ void setup() {
 
   Motor4Movement(1, 200);
   Motor4Movement(3, 0); // Stop
-  delay(1000);
+  delay(500);
 
   
   for (int pos = endAngle; pos <= startAngle; pos++) {
     myServo2.write(pos);
-    delay(20);
+    delay(15);
   }
 }
 
