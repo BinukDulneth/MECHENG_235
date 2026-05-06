@@ -71,11 +71,13 @@ void setup(){
     Servo_LongA.attach(9);
     Servo_ShortA.write(startAngle);
     Servo_ShortA.attach(4);
-
-
     delay(100);
+
+    
     //GaurdRail_Deploy();
     FirstBlock();
+    // SecondBlock();
+    // ThirdBlock();
 
 
 }

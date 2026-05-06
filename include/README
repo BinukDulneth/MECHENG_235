@@ -8,7 +8,7 @@
 /*
 
 6th May 
-Project succesfful : 30 seconds to complete the job. 
+Project succesful : 30 seconds to complete the job. 
 
 Optimization occurs: 
     Lower delays between each instruction 
@@ -24,6 +24,14 @@ Outcomes:
     - servos deploy at the same time even though they are powered by 2 different pins.
 
 
+7th May 
+Project Status : ~15 seconds 
+
+Notes on Code with the timer: 
+    - Structered into 3 main block for testing and debugging the process. 
+    - Coded with optimisation/speed in mind. Lower number of instructions performed. (Comparions take lower time than digital writes)
+    - considered Memory capacity too. Used 'byte' where applicable as it requires lower memory than 'int'. 
+    - Max two motors/servos run at a time to prevent excessive current usage. 
 
 
 */
