@@ -185,6 +185,10 @@ void Motor3Movement(int direction, int duration) {
     digitalWrite(IN5, HIGH);
     digitalWrite(IN6, LOW);
   } 
+  else if (direction == 4){
+    digitalWrite(IN5, HIGH);
+    digitalWrite(IN6, HIGH);
+  }
   else { 
     digitalWrite(IN5, LOW);
     digitalWrite(IN6, LOW);
