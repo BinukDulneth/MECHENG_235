@@ -7,6 +7,8 @@
 
 /*
 
+
+---------------------------------------------------------------------------------
 6th May 
 Project succesful : 30 seconds to complete the job. 
 
@@ -24,6 +26,8 @@ Outcomes:
     - servos deploy at the same time even though they are powered by 2 different pins.
 
 
+
+-----------------------------------------------------------------------------------
 7th May 
 Project Status : ~15 seconds 
 
@@ -33,5 +37,14 @@ Notes on Code with the timer:
     - considered Memory capacity too. Used 'byte' where applicable as it requires lower memory than 'int'. 
     - Max two motors/servos run at a time to prevent excessive current usage. 
 
+
+Test Results: 
+    - Sequence works. 
+    - Short Arm requires vlong delays : Probably due to faulty Short arms. As it heated up and the motors run rough. 
+
+
+Optimization/For next testing: 
+    - 1 Motor driver runs Elbows. Other driver runs shoulders. 
+            This prevents the motor drive from drawing too much current as one elbow + one shoulder runs at a single time. 
 
 */
