@@ -185,8 +185,8 @@ void ElbowUp(char Arm){
 
 void ElbowStop(char Arm){
     if (Arm == 'S'){
-        digitalWrite(IN7,LOW);
-        digitalWrite(IN8,LOW);
+        digitalWrite(IN3,LOW);
+        digitalWrite(IN4,LOW);
         //delay(10);
     }else if (Arm == 'L'){
         digitalWrite(IN1,LOW);
