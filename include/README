@@ -45,6 +45,16 @@ Test Results:
 
 Optimization/For next testing: 
     - 1 Motor driver runs Elbows. Other driver runs shoulders. 
-            This prevents the motor drive from drawing too much current as one elbow + one shoulder runs at a single time. 
+            This prevents the motor drive from drawing too much current as one elbow + one shoulder
+            runs at a single time.
 
+----------------------------------------------------------------------------------
+
+9th May 
+Project Status : ~ 15 Seconds 
+
+Optimization : 
+    - Implementing a RTOS code to run Gaurdrails in parallel to main operations. 
+    - Bare metal programming of the timer codes to have greater accuracy. 
+    - Development of the potentiometer + RTOS 
 */
