@@ -68,4 +68,9 @@ Notes :
     - MG90 switched allos the guard rails to be deployed at the same time as the First Block 
     - PWM imlemented when arms going down
 
+
+
+Code updates required: 
+    - PWM has control of the back functions so update the Stop function. Not sure if needed to be done
+
 */
