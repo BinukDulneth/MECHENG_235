@@ -15,13 +15,13 @@ const byte IN6 = 11;
 const byte IN7 = 3; //L
 const byte IN8 = 5;
 
-const byte LG_Servo = 13; 
-const byte RG_Servo = 12;   // change accordingly
+const byte LG_ServoPin = A0; 
+const byte RG_ServoPin = A1;   // change accordingly
 
 /*-----------------------------------HAND ANGLES-------------------------------------------------------*/
 
-byte Servo_L_Pin = 8;
-byte Servo_S_Pin = 7;
+const byte Servo_L_Pin = 8;
+const byte Servo_S_Pin = 7;
 
 const byte endAngle = 110;
 const byte startAngle = 180;
@@ -57,6 +57,9 @@ unsigned long CurrentTime = millis();
 bool EventA = false;
 bool EventB = false; 
 
+
+const byte GR_Duration = 200;
+
 unsigned long S_ShoulderBack = 150;
 // S_ElbowBack > L_ShoulderBack
 unsigned long S_ElbowBack = 100;
@@ -77,12 +80,10 @@ unsigned long L_ElbowUp = 100;
 
 void setup(){
 
-    Serial.begin(9600);
-    Serial.println("Initializing...");
     Servo_LongA.write(endAngle);
     Servo_LongA.attach(Servo_L_Pin);
-    Servo_ShortA.write(Servo_S_Pin);
-    Servo_ShortA.attach(4);
+    Servo_ShortA.write(startAngle);
+    Servo_ShortA.attach(Servo_S_Pin);
     delay(100);
 
     for (int p = 2 ; p <= 13; p++) {
@@ -92,20 +93,10 @@ void setup(){
     }
     
 
-    // GaurdRail_Deploy();
+    GaurdRail_Deploy();
     // FirstBlock();
     // SecondBlock();
     // ThirdBlock();
-
-
-    ShoulderStop('S');
-    ElbowStop('S');
-    ElbowStop('L');
-
-    ShoulderBack('S');
-    delay(150);
-    ShoulderStop('S');
-
 
 }
 
@@ -116,28 +107,25 @@ void loop(){
 
 
 void GaurdRail_Deploy(){
-    //SUCCESS
-    //Currently servos must be roated either side. 
-    // Code now allows bidirectional rotation at the same time. 
-    Servo_L_Gaurdrail.write(180);
-    delay(10);
-    Servo_L_Gaurdrail.attach(LG_Servo);
+    Servo_L_Gaurdrail.attach(LG_ServoPin);
+    Servo_R_Gaurdrail.attach(RG_ServoPin);
 
-    Servo_R_Gaurdrail.write(40);
-    delay(10);
-    Servo_R_Gaurdrail.attach(RG_Servo);
+    Servo_L_Gaurdrail.write(90);
+    Servo_R_Gaurdrail.write(90);
 
-    byte LG_Angle = 180; 
-    byte RG_Angle = 40; 
+    Servo_L_Gaurdrail.write(30);
+    Servo_R_Gaurdrail.write(150);
+    delay(200);
 
-    while(LG_Angle != 40 ){ // only one comparison made as both angles will go through same difference
-        LG_Angle--;
-        RG_Angle++; 
-        delay(10); // Longer delay if needed
-        Servo_L_Gaurdrail.write(LG_Angle);
-        Servo_R_Gaurdrail.write(RG_Angle);
-    }
+    Servo_L_Gaurdrail.write(90);
+    Servo_R_Gaurdrail.write(90);
+
+    Servo_L_Gaurdrail.detach();
+    Servo_R_Gaurdrail.detach();
 }
+
+
+
 
 void ShoulderBack(char Arm){
     if (Arm == 'S'){
