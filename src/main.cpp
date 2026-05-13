@@ -43,8 +43,8 @@ Servo Servo_LongA;
 void GaurdRail_Deploy();
 void ShoulderBack(char Arm, byte Power);
 void ElbowBack(char Arm, byte Power);
-void ShoulderUp(char Arm);
-void ElbowUp(char Arm);
+void ShoulderUp(char Arm, byte Power);
+void ElbowUp(char Arm, byte Power);
 void ElbowStop(char Arm);
 void ShoulderStop(char Arm);
 void FirstBlock();
@@ -65,8 +65,8 @@ unsigned long S_ShoulderBack = 150;
 unsigned long S_ElbowBack = 100;
 unsigned long L_ShoulderBack = 85;
 
-unsigned long S_ShoulderUp = 1500;
-unsigned long S_ElbowUp = 1200;
+unsigned long S_ShoulderUp = 700;
+unsigned long S_ElbowUp = 100;
 unsigned long L_ElbowDown = 80;
 
 unsigned long L_ShoulderUp = 700;
@@ -95,8 +95,8 @@ void setup(){
 
     GaurdRail_Deploy();
     FirstBlock();
-    // SecondBlock();
-    // ThirdBlock();
+    SecondBlock();
+    ThirdBlock();
 
 }
 
@@ -115,7 +115,7 @@ void GaurdRail_Deploy(){
 
     Servo_L_Gaurdrail.write(30);
     Servo_R_Gaurdrail.write(150);
-    delay(200);
+    delay(100);
 
     Servo_L_Gaurdrail.write(90);
     Servo_R_Gaurdrail.write(90);
@@ -151,23 +151,23 @@ void ElbowBack(char Arm, byte Power){
     }
 }
 
-void ShoulderUp(char Arm){
+void ShoulderUp(char Arm, byte Power){
     if (Arm == 'S'){
         digitalWrite(IN5,LOW);
-        digitalWrite(IN6,HIGH);
+        analogWrite(IN6,Power);
     } else if (Arm == 'L'){
         digitalWrite(IN7,LOW);
-        digitalWrite(IN8,HIGH);
+        analogWrite(IN8,Power);
     }
 }
 
-void ElbowUp(char Arm){
+void ElbowUp(char Arm, byte Power){
     if (Arm == 'S'){
         digitalWrite(IN3,LOW);
-        digitalWrite(IN4,HIGH);
+        analogWrite(IN4,Power);
     }else if (Arm == 'L'){
         digitalWrite(IN1,LOW);
-        digitalWrite(IN2,HIGH);
+        analogWrite(IN2,Power);
     }
 }
 
@@ -227,12 +227,12 @@ void FirstBlock(){
     ElbowBack('S',powerA);
     ShoulderBack('L',powerB);
     CurrentTime = millis();
-
-
     while(true){
        // Need powerA> 0 condition? 
         ElbowBack('S',(powerA - 50));
-        if (powerB != 0) {ShoulderBack('L', (powerB- 50) );}
+        if (powerB != 0) {
+            ShoulderBack('L', (powerB- 50) );
+        }
 
         if (millis() > (CurrentTime + S_ElbowBack)){
             ElbowStop('S');
@@ -257,87 +257,122 @@ void FirstBlock(){
     }
 }
 
-// void SecondBlock(){
-//     /*
+void SecondBlock(){
+    /*
     
-//     Overview :
-//         1) S_Shoulder Up >+ S_Elbow Up 
-//         2)L Elbow Down 
-//         3)L Hand close + S Hand Open 
-//     */
-
-//     ShoulderUp('S');
-//     ElbowUp('S');
-//     CurrentTime = millis();
-//     while (true){
-//         if (millis() > (CurrentTime + S_ShoulderUp)){
-//             ShoulderStop('S');
-//             break;          //S_ShoulderUp>
-//         }
-//         if(millis() > (CurrentTime + S_ElbowUp)){
-//             ElbowStop('S');
-//         }
-//     }
-
-//     ElbowBack('L');
-//     delay(70);
-//     ElbowStop('L');
-
-
-
-//     while(S_Angle != startAngle){
-//         S_Angle++;
-//         L_Angle--;
-//         Servo_ShortA.write(S_Angle);
-//         Servo_LongA.write(L_Angle);
-//         delay(20);
-//     }
-
-// }
-
-// void ThirdBlock(){
-//     /*
-//     Overview : 
-//         1) S_ShoulderBack + S_ElbowBack
-//         2) L_ShoulderUp + L_ElbowUp
-//         3) L Hand Open
-//     */
-
-//     ShoulderBack('S');
-//     ElbowBack('S');
-//     CurrentTime = millis(); 
-//     while(1){ 
-//         if (millis() > (CurrentTime + (S_ShoulderBack/4) )){
-//             ShoulderStop('L');
-//             break;              // Shoulder Delay >
-//         }
-//         if (millis() > (CurrentTime + (S_ElbowBack/4
-//         ) )){
-//             ElbowStop('L');
-//         }
-//     }
+    Overview :
+        1) S_Shoulder Up >+ S_Elbow Up 
+        2) L Elbow Down 
+        3) L Hand close + S Hand Open 
+    */
+   
+    powerA = 255;
+    powerB = 255;
+    ShoulderUp('S',powerA);
+    ElbowUp('S',powerB);
+    CurrentTime = millis();
+    while (true){
+        ShoulderUp('S',(powerA - 20));
+        if(powerB != 0){
+            ElbowUp('S',(powerB - 20));
+        }
+        if (millis() > (CurrentTime + S_ShoulderUp)){
+            ShoulderStop('S');
+            break;          //S_ShoulderUp>
+        }
+        if(millis() > (CurrentTime + S_ElbowUp)){
+            ElbowStop('S');
+            powerB = 0;
+        }
+    }
+    
 
 
-//     ShoulderUp('L');
-//     ElbowUp('L');
-//     CurrentTime = millis();
-//     while(1){
-//         if(millis() > (CurrentTime + L_ShoulderUp)){ 
-//             ShoulderStop('L');
-//             break;
-//         }
-//         if(millis() > (CurrentTime + L_ElbowUp)){
-//             ElbowStop('L');
-//         }
-//     }
+    powerA = 255; 
+    CurrentTime = millis();
+     ElbowBack('L',powerA);
+    while (millis() < (CurrentTime + 70) ){
+        ElbowBack('L',(powerA - 5));
+    }
+    ElbowStop('L');
 
 
 
-//     while(L_Angle != startAngle){
-//         L_Angle--;
-//         Servo_LongA.write(L_Angle);
-//         delay(20);
-//     }
-// }
+
+
+    while(S_Angle != startAngle){
+        S_Angle++;
+        L_Angle--;
+        Servo_ShortA.write(S_Angle);
+        Servo_LongA.write(L_Angle);
+        delay(20);
+    }
+
+}
+
+void ThirdBlock(){
+    /*
+    Overview : 
+        1) S_ShoulderBack + S_ElbowBack
+        2) L_ShoulderUp + L_ElbowUp
+        3) L Hand Open
+    */
+
+    powerA = 255;
+    powerB =255; 
+    ShoulderBack('S',powerA);
+    ElbowBack('S',powerB);
+    CurrentTime = millis(); 
+    while(true){ 
+        ShoulderBack('S',(powerA - 50));
+        if(powerB != 0){
+            ElbowBack('S',(powerB - 50));
+        }
+        
+        if (millis() > (CurrentTime + (S_ShoulderBack/4) )){
+            ShoulderStop('S');
+            break;              // Shoulder Delay >
+        }
+        if (millis() > (CurrentTime + (S_ElbowBack/4) )){
+            ElbowStop('S');
+            powerB = 0;
+        }
+    }
+
+    powerA = 255;
+    powerB = 255;
+    ShoulderUp('L',powerA);
+    ElbowUp('L',powerB);
+    CurrentTime = millis();
+    while(true){
+        ShoulderUp('L',(powerA - 20));
+        if(powerB != 0){
+            ElbowUp('L',(powerB - 20));
+        }
+        if(millis() > (CurrentTime + L_ShoulderUp)){ 
+            ShoulderStop('L');
+            break;
+        }
+        if(millis() > (CurrentTime + L_ElbowUp)){
+            ElbowStop('L');
+            powerB = 0; 
+        }
+    }
+
+
+
+    while(L_Angle != startAngle){
+        L_Angle--;
+        Servo_LongA.write(L_Angle);
+        delay(20);
+    }
+
+
+    ShoulderStop('L');
+    ShoulderStop('S');
+
+    ElbowStop('L');
+    ElbowStop('S');
+}
 
 
