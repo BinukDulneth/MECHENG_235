@@ -73,4 +73,27 @@ Notes :
 Code updates required: 
     - PWM has control of the back functions so update the Stop function. Not sure if needed to be done
 
+
+
+
+14th MAY : 
+
+Notes : 
+    Pin Confilcts with timer for Millis(). Pin 5 and Pin 6. So HIGH/LOW logic will be used. 
+
+
+
+15th MAY : 
+
+Notes: 
+    - Shoulders will have PWM going down. 
+
+
+18th May : 
+
+Notes : 
+    - Buzzer code implemented to do 3 beeps at start 
+    - RED LED coded to flash 3 times at start then keep on RED till process is over. 
+    - Limit switch codes added. 
+
 */
