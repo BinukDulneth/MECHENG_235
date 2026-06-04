@@ -23,8 +23,8 @@ const byte RG_ServoPin = A1;   // change accordingly
 
 /*--------------------------------SWITCH PIN DEFINITIONS--------------------------------------------------------------*/
 
-byte ShortA_Switch = A2; 
-byte LongA_Switch = A3;
+byte ShortA_Switch = A3; 
+byte LongA_Switch = A2;
 byte RedLED = A4;
 //byte GreenLED = A5;
 byte Buzzer = A5;
@@ -33,11 +33,11 @@ byte Buzzer = A5;
 const byte Servo_L_Pin = 8;
 const byte Servo_S_Pin = 7;
 
-const byte endAngle = 110;
+const byte endAngle = 85;
 const byte startAngle = 180;
 
 byte S_Angle = startAngle;
-byte L_Angle = endAngle;
+byte L_Angle = startAngle;
 
 /*-----------------------------------SERVO DEFINITIONS------------------------------------------------*/
 Servo Servo_L_Gaurdrail;
@@ -72,17 +72,20 @@ bool EventB = false;
 
 const byte GR_Duration = 200;
 
-unsigned long S_ShoulderBack = 170;
+unsigned long S_ShoulderBack = 120;
 // S_ElbowBack > L_ShoulderBack
 unsigned long S_ElbowBack = 100;
 unsigned long L_ShoulderBack = 85;
 
-unsigned long S_ShoulderUp = 1000;
-unsigned long S_ElbowUp = 900;
-unsigned long L_ElbowDown = 120;
+
+
+unsigned long S_ShoulderUp = 600;
+
+// unsigned long S_ElbowUp = 500;
+// unsigned long L_ElbowDown = 100;
 
 unsigned long L_ShoulderUp = 700;
-unsigned long L_ElbowUp = 100;
+// unsigned long L_ElbowUp = 200;
 
 /*-----------------------------------GLOBAL VARIABLES-----------------------------------------------*/
 
@@ -94,7 +97,7 @@ void setup(){
     
 
     for (int p = 2 ; p <= 13; p++) {
-        if ( (p != 9) & (p != 4) & (p != 2) & (p != 3) ) { // Skip pin 9,4,3,2 (the servos)
+        if ( (p != Servo_S_Pin) && (p != Servo_L_Pin) ) { //Skip servo pins
             pinMode(p, OUTPUT); 
         }
     }
@@ -105,46 +108,42 @@ void setup(){
     pinMode(LongA_Switch,INPUT_PULLUP);
    
 
-    Servo_LongA.write(endAngle);
+    Servo_LongA.write(startAngle);
     Servo_LongA.attach(Servo_L_Pin);
     Servo_ShortA.write(startAngle);
     Servo_ShortA.attach(Servo_S_Pin);
     delay(100);
-    
 
-    Startup();
-    //GaurdRail_Deploy();
-    //FirstBlock();
-    //SecondBlock();
-    //ThirdBlock();
-    
-    
-    digitalWrite(RedLED,LOW);
+
+    digitalWrite(13,LOW);
+     
+    GaurdRail_Deploy();
+    FirstBlock();
+    SecondBlock();
+
+    //Safety : turning the Motors off to prevent stalling
     DettachServos();
     ShoulderStop('L');
     ShoulderStop('S');
-
     ElbowStop('L');
     ElbowStop('S');
 
-
+    digitalWrite(13,HIGH);
 
 }
 
 void loop(){
+
 }
 
 
 void Startup(){
     for(byte i = 0; i < 3; i++){
         digitalWrite(Buzzer,HIGH);
-        digitalWrite(RedLED,HIGH);
         delay(500);
         digitalWrite(Buzzer,LOW);
-        digitalWrite(RedLED,LOW);
         delay(500);
     }
-    digitalWrite(RedLED,HIGH);
 }
 
 
@@ -160,9 +159,9 @@ void GaurdRail_Deploy(){
     Servo_L_Gaurdrail.write(90);
     Servo_R_Gaurdrail.write(90);
 
-    Servo_L_Gaurdrail.write(130);
-    Servo_R_Gaurdrail.write(50);
-    delay(300);
+    Servo_L_Gaurdrail.write(50);
+    Servo_R_Gaurdrail.write(130);
+    delay(GR_Duration);
 
     Servo_L_Gaurdrail.write(90);
     Servo_R_Gaurdrail.write(90);
@@ -176,11 +175,9 @@ void ShoulderBack(char Arm, byte Power){
     if (Arm == 'S'){
         analogWrite(IN5,Power);
         digitalWrite(IN6,LOW);
-        //delay(10);
     }else if (Arm == 'L'){
         analogWrite(IN7,Power);
         digitalWrite(IN8,LOW);
-        //delay(10);
     }
 }
 
@@ -188,11 +185,9 @@ void ElbowBack(char Arm){
     if (Arm == 'S'){
         digitalWrite(IN3,HIGH);
         digitalWrite(IN4,LOW);
-        //delay(10);
     }else if (Arm == 'L'){
         digitalWrite(IN1,HIGH);
         digitalWrite(IN2,LOW);
-        //delay(10);
     }
 }
 
@@ -232,161 +227,132 @@ void ShoulderStop(char Arm){
     if (Arm == 'S'){
         digitalWrite(IN5,LOW);
         digitalWrite(IN6,LOW);
-        //delay(10);
     }else if (Arm == 'L'){
         digitalWrite(IN7,LOW);
         digitalWrite(IN8,LOW);
-        //delay(10);
     }
 }
 
 void FirstBlock(){ 
     /*
-
-    Status: In - Progress
-
-
-    Overview of sequence in order: 
-        1) S shoulder back 
-        2) S Elbow + L Shoulder : Back
-        3) S Hand close + L Hand Open 
-
+        Overview  :  
+            1) Long Arm Grabs ball 
+            2) Short Arm grabs ball 
     */
 
-
-    //Step 1 
-    powerA= 255;
-    ShoulderBack('S',powerA);
-    CurrentTime = millis();
-    while(millis() < (CurrentTime + 100)){      // Delay : 100 ms 
-        ShoulderBack('S',(powerA - 5));
-    }
-    ShoulderStop('S');
-
-    //Step 2
-    // S Elbow > L Shoulder
-    powerA= 255;
-    ElbowBack('S');
-    ShoulderBack('L',powerA);
-    CurrentTime = millis();
-    while(true){
-
-        if (powerA != 0) {
-            ShoulderBack('L', (powerA - 10) );
-        }
-
-        if (millis() > (CurrentTime + S_ElbowBack)){
-            ElbowStop('S');
-            break; 
-        }
-
-        if (millis() > (CurrentTime + L_ShoulderBack)){
-            ShoulderStop('L');
-            powerA = 0;
-        }
-     
-    }
-
-    //Step 3 
-    //S Hand Closing + L Hand Opening
-    while(S_Angle != endAngle){
-        S_Angle--;
-        L_Angle++;
-        Servo_ShortA.write(S_Angle);
-        Servo_LongA.write(L_Angle);
-        delay(30);
-    }
+    ElbowBack('L');
     delay(100);
-
-}
-
-void SecondBlock(){
-    /*
-    
-    Overview :
-        1) S_Shoulder Up >+ S_Elbow Up 
-        2) L Elbow Down 
-        3) L Hand close + S Hand Open 
-    */
-   
-   
-    ShoulderUp('S');
-    ElbowUp('S');
-    CurrentTime = millis();
-    while (true){
-        if(millis() > (CurrentTime + S_ElbowUp)){
-            ElbowStop('S');
-        }
-        if (digitalRead(ShortA_Switch) == LOW){
-            ShoulderStop('S');
-            break;          //S_ShoulderUp>
-        }
-    }
-
-    
-
-
-    ElbowBack('L'); //uses HIGH as their is Pin conflicts 
-    delay(L_ElbowDown);
     ElbowStop('L');
 
-
-    while(S_Angle != startAngle){
-        S_Angle++;
-        L_Angle--;
-        Servo_ShortA.write(S_Angle);
-        Servo_LongA.write(L_Angle);
-        delay(30);
-    }
     delay(100);
 
-}
+    ShoulderBack('L',190);
+    delay(70);
+    ShoulderStop('L');
 
-void ThirdBlock(){
-    /*
-    Overview : 
-        1) S_ShoulderBack + S_ElbowBack
-        2) L_ShoulderUp + L_ElbowUp
-        3) L Hand Open
-    */
 
-    powerA = 255;
-    ShoulderBack('S',powerA);
-    ElbowBack('S');
-    CurrentTime = millis(); 
-    while(true){ 
-        ShoulderBack('S',(powerA - 10));
-        if (millis() > (CurrentTime + (S_ShoulderBack) )){
-            ShoulderStop('S');
-            break;              // Shoulder Delay >
-        }
-        if (millis() > (CurrentTime + (S_ElbowBack) )){
-            ElbowStop('S');
-        }
-    }
+    delay(200);
 
-   
-
-    ShoulderUp('L'); // HIGH/LOW logic cause of Conflict 
-    ElbowUp('L');
-    CurrentTime = millis();
-    while(true){
-        if(millis() > (CurrentTime + L_ElbowUp)){
-            ElbowStop('L');
-        }
-        if(digitalRead(LongA_Switch) == LOW){ 
-            ShoulderStop('L');
-            break;
-        }
-    }
-
-    while(L_Angle != startAngle){
+    while(L_Angle != endAngle){
         L_Angle--;
         Servo_LongA.write(L_Angle);
         delay(10);
     }
 
+    delay(100);
+
+    ElbowBack('S');
+    delay(110);
+    ElbowStop('S');
+
+    delay(100);
+
+    ShoulderBack('S',200);
+    delay(140);
+    ShoulderStop('S');
+
+
+
+    delay(300);
+
+    while(S_Angle != endAngle){
+        S_Angle--;
+        Servo_ShortA.write(S_Angle);
+        delay(10);
+    }
+
+
 }
 
+void SecondBlock(){
+    /*
+        Overview : 
+            1) Long Arm delivers the ball 
+            2) Short Armrm delivers the ball 
+
+    */
+   int count = 0; 
+
+    ShoulderUp('L');
+
+    while (digitalRead(LongA_Switch)!=LOW ) {
+        count++;
+        if (count >= 160){
+            break;
+        }
+        
+        delay(5);
+    }
+    delay(20);
+    ShoulderStop('L');
 
 
+    ElbowUp('L');
+    delay(100);
+    ElbowStop('L');
+
+    delay(400);
+
+
+    while(L_Angle != startAngle){
+        L_Angle++;
+        Servo_LongA.write(L_Angle);
+        delay(15);
+    }
+
+    delay(100);
+
+    ElbowBack('L');
+    delay(100);
+    ElbowStop('L');
+
+    delay(100);
+
+    ElbowUp('S');
+    delay(250);
+    ElbowStop('S');
+
+    ShoulderUp('S');
+    count = 0;
+    while (digitalRead(ShortA_Switch)!=LOW) {
+        count++;
+        if(count >= 160){
+            break;
+        }
+        delay(5);
+    }
+    delay(20);
+    ShoulderStop('S');
+
+
+
+    delay(200);
+
+    while(S_Angle != startAngle){
+        S_Angle++;
+        Servo_ShortA.write(S_Angle);
+        delay(15);
+    }
+
+
+}

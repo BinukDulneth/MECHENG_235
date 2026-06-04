@@ -10,17 +10,14 @@
             "includePath": [
                 "C:/Users/Uni/Documents/PlatformIO/Projects/235/include",
                 "C:/Users/Uni/Documents/PlatformIO/Projects/235/src",
-                "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit SSD1306",
-                "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit GFX Library",
-                "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit BusIO",
-                "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Servo/src",
                 "C:/Users/Uni/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/Uni/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                 "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 ""
             ],
             "browse": {
@@ -28,17 +25,14 @@
                 "path": [
                     "C:/Users/Uni/Documents/PlatformIO/Projects/235/include",
                     "C:/Users/Uni/Documents/PlatformIO/Projects/235/src",
-                    "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit SSD1306",
-                    "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit GFX Library",
-                    "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Adafruit BusIO",
-                    "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "C:/Users/Uni/Documents/PlatformIO/Projects/235/.pio/libdeps/uno/Servo/src",
                     "C:/Users/Uni/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/Uni/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                     "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "C:/Users/Uni/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     ""
                 ]
             },
