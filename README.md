@@ -2,7 +2,7 @@
 
 ## AUTHOR :    Binuk Dulneth 
 
-### __Both Balls were successfully delivered in 9.6 Seconds. __
+###  *Both Balls were successfully delivered in 9.6 Seconds.*
 
 --------------------------------------------------------------------------------------------------------------
 Functions : 
