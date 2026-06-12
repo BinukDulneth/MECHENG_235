@@ -1,11 +1,15 @@
-// NOTES: 
-// 20/04/2026 
-// Power to the motors to correct itself is given by multiplying the difference between the desired angle and the angle of the motor but maxed out at 255. 
-// Motor would go past the desired angle and recorrect itself. 
-// Not ideal movement. 
+
+TIMELINE : 
+
+---------------------------------------------------------------------------------
+20 April0
+    Power to the motors to correct itself is given by multiplying the difference between
+    the desired angle and the angle of the motor but maxed out at 255.    
+
+    Motor would go past the desired angle and recorrect itself. 
+    Not ideal movement. 
 
 
-/*
 
 
 ---------------------------------------------------------------------------------
@@ -53,7 +57,7 @@ Optimization/For next testing:
 9th May 
 Project Status : ~ 15 Seconds 
 
-Optimization : 
+Stretches? : 
     - Implementing a RTOS code to run Gaurdrails in parallel to main operations. 
     - Bare metal programming of the timer codes to have greater accuracy. 
     - Development of the potentiometer + RTOS 
@@ -67,6 +71,12 @@ Project Status : ~15 Seconds
 Notes : 
     - MG90 switched allos the guard rails to be deployed at the same time as the First Block 
     - PWM imlemented when arms going down
+
+
+Notes on Stretches : 
+    - RTOS was too heavy on the UNO 
+    - Potentiometer was not accurate
+    - 
 
 
 
@@ -96,4 +106,27 @@ Notes :
     - RED LED coded to flash 3 times at start then keep on RED till process is over. 
     - Limit switch codes added. 
 
-*/
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                Development of Veroboard
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+June 3rd - 4th : 
+
+Veroboard had shorting issue thus it was ideal to use wires due to the tight deadline. 
+
+Thus final Final Code : 
+    Project Status ~ 10 Seconds 
+    
+    Used a sequential instructions with delays instead of timer as it was more reliable (no excessive current draws thus safe for components). 
+    PWM of shoulder motors going DOWN.
+    Limit switches were added to control the shoulders going up (for added safety there was a time duration allocated for the shoulders to go up incase
+    limit switch fails)
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+DEMONSTRATION DAY ~ June 5th
+
+    BOTH BALLS IN THE HOLE!!!!!!!!!             @           9.7 SECONDSSS!!!!
+

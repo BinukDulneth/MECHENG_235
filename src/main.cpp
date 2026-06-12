@@ -1,6 +1,6 @@
+
 #include <Arduino.h>
 #include <Servo.h>
-
 
 /*-----------------------------------MOTOR DRIVER PIN DEFINITIIONS --------------------------------------------------*/
 // ELBOW
@@ -25,8 +25,7 @@ const byte RG_ServoPin = A1;   // change accordingly
 
 byte ShortA_Switch = A3; 
 byte LongA_Switch = A2;
-byte RedLED = A4;
-//byte GreenLED = A5;
+
 byte Buzzer = A5;
 /*-----------------------------------Servo PINS + HAND ANGLES-------------------------------------------------------*/
 
@@ -51,7 +50,7 @@ Servo Servo_LongA;
 void Startup();
 void GaurdRail_Deploy();
 
-void AttachServos();
+
 void DettachServos();
 
 void ShoulderBack(char Arm, byte Power);
@@ -62,30 +61,21 @@ void ElbowStop(char Arm);
 void ShoulderStop(char Arm);
 void FirstBlock();
 void SecondBlock(); 
-void ThirdBlock();
 
 /*----------------------------------------TIMINGS-----------------------------------------------------*/
-unsigned long CurrentTime = millis();
 bool EventA = false;
-bool EventB = false; 
 
 
 const byte GR_Duration = 200;
 
-unsigned long S_ShoulderBack = 120;
-// S_ElbowBack > L_ShoulderBack
-unsigned long S_ElbowBack = 100;
-unsigned long L_ShoulderBack = 85;
+unsigned int L_ElbowBack = 100;
+unsigned int L_ShoulderBack = 70;
+unsigned int S_ElbowBack = 110;
+unsigned int S_ShoulderBack = 140;
 
 
-
-unsigned long S_ShoulderUp = 600;
-
-// unsigned long S_ElbowUp = 500;
-// unsigned long L_ElbowDown = 100;
-
-unsigned long L_ShoulderUp = 700;
-// unsigned long L_ElbowUp = 200;
+unsigned long S_ElbowUp = 250;
+unsigned long L_ElbowUp = 100;
 
 /*-----------------------------------GLOBAL VARIABLES-----------------------------------------------*/
 
@@ -103,7 +93,6 @@ void setup(){
     }
 
     pinMode(Buzzer,OUTPUT);
-    pinMode(RedLED,OUTPUT);
     pinMode(ShortA_Switch,INPUT_PULLUP);
     pinMode(LongA_Switch,INPUT_PULLUP);
    
@@ -116,7 +105,7 @@ void setup(){
 
 
     digitalWrite(13,LOW);
-     
+    //Startup();
     GaurdRail_Deploy();
     FirstBlock();
     SecondBlock();
@@ -215,11 +204,9 @@ void ElbowStop(char Arm){
     if (Arm == 'S'){
         digitalWrite(IN3,LOW);
         digitalWrite(IN4,LOW);
-        //delay(10);
     }else if (Arm == 'L'){
         digitalWrite(IN1,LOW);
         digitalWrite(IN2,LOW);
-        //delay(10);
     }
 }
 
@@ -241,18 +228,19 @@ void FirstBlock(){
     */
 
     ElbowBack('L');
-    delay(100);
+    delay(L_ElbowBack);
     ElbowStop('L');
 
     delay(100);
 
     ShoulderBack('L',190);
-    delay(70);
+    delay(L_ShoulderBack);
     ShoulderStop('L');
 
 
     delay(200);
 
+    //Closing Of Long Arm's Claw
     while(L_Angle != endAngle){
         L_Angle--;
         Servo_LongA.write(L_Angle);
@@ -262,19 +250,18 @@ void FirstBlock(){
     delay(100);
 
     ElbowBack('S');
-    delay(110);
+    delay(S_ElbowBack);
     ElbowStop('S');
 
     delay(100);
 
     ShoulderBack('S',200);
-    delay(140);
+    delay(S_ShoulderBack);
     ShoulderStop('S');
-
-
 
     delay(300);
 
+    //Closing of Short Arm's Claw
     while(S_Angle != endAngle){
         S_Angle--;
         Servo_ShortA.write(S_Angle);
@@ -291,8 +278,9 @@ void SecondBlock(){
             2) Short Armrm delivers the ball 
 
     */
-   int count = 0; 
 
+    
+    int count = 0; 
     ShoulderUp('L');
 
     while (digitalRead(LongA_Switch)!=LOW ) {
@@ -308,12 +296,12 @@ void SecondBlock(){
 
 
     ElbowUp('L');
-    delay(100);
+    delay(L_ElbowUp);
     ElbowStop('L');
 
     delay(400);
 
-
+    //Opening the Long Arm's Claw to release the ball.
     while(L_Angle != startAngle){
         L_Angle++;
         Servo_LongA.write(L_Angle);
@@ -323,13 +311,13 @@ void SecondBlock(){
     delay(100);
 
     ElbowBack('L');
-    delay(100);
+    delay(L_ElbowBack);
     ElbowStop('L');
 
     delay(100);
 
     ElbowUp('S');
-    delay(250);
+    delay(S_ElbowUp);
     ElbowStop('S');
 
     ShoulderUp('S');
@@ -344,10 +332,9 @@ void SecondBlock(){
     delay(20);
     ShoulderStop('S');
 
-
-
     delay(200);
-
+    
+    //Opening of Short Arm's Claw to release the ball. 
     while(S_Angle != startAngle){
         S_Angle++;
         Servo_ShortA.write(S_Angle);
