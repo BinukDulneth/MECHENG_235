@@ -56,7 +56,6 @@ Optimization/For next testing:
 
 9th May 
 Project Status : ~ 15 Seconds 
-
 Stretches? : 
     - Implementing a RTOS code to run Gaurdrails in parallel to main operations. 
     - Bare metal programming of the timer codes to have greater accuracy. 
@@ -66,7 +65,7 @@ Stretches? :
 
 
 12th May 
-Project Status : ~15 Seconds
+Project Status : ~12 Seconds
 
 Notes : 
     - MG90 switched allos the guard rails to be deployed at the same time as the First Block 
