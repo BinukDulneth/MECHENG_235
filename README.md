@@ -1,4 +1,5 @@
-MECHENG 235 PROJECT
+*MECHENG 235 PROJECT*
+
 AUTHOR :    Binuk Dulneth 
 
     Both Balls were successfully delivered in 9.6 Seconds. 
